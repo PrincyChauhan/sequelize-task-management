@@ -32,4 +32,11 @@ const Subtask = sequelize.define(
   }
 );
 
+Subtask.associate = (models) => {
+  Subtask.belongsTo(models.Task, {
+    foreignKey: "taskId",
+    as: "task",
+  });
+};
+
 module.exports = Subtask;

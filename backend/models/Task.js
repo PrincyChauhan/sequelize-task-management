@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
-const commmonFields = require("./commonFields");
+const commonFields = require("./commonFields");
 
 const Task = sequelize.define(
   "Task",
@@ -41,11 +41,18 @@ const Task = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    ...commmonFields,
+    ...commonFields,
   },
   {
     timestamps: true,
   }
 );
+
+Task.associate = (models) => {
+  Task.hasMany(models.SubTask, {
+    foreignKey: "taskId",
+    as: "subtasks",
+  });
+};
 
 module.exports = Task;

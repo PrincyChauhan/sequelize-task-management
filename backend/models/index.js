@@ -10,6 +10,8 @@ const db = {
   SubTask,
 };
 
+Task.associate({ SubTask });
+
 db.syncDatabase = async () => {
   try {
     // await sequelize.sync({ alter: true });
