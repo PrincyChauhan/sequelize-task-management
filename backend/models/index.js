@@ -11,6 +11,7 @@ const db = {
 };
 
 Task.associate({ SubTask });
+SubTask.associate({ Task });
 
 db.syncDatabase = async () => {
   try {
