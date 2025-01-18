@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const Signup = () => {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -34,7 +36,8 @@ const Signup = () => {
         setSuccess("Admin created successfully!");
         setTimeout(() => {
           setSuccess("");
-        }, 3000);
+          navigate("/login");
+        }, 1000);
       } else {
         setError("Failed to create admin.");
       }
