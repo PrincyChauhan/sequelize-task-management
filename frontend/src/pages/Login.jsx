@@ -34,7 +34,7 @@ const Login = () => {
         setTimeout(() => {
           setSuccess("");
           navigate("/dashboard");
-        }, 1000);
+        }, 500);
       } else {
         setError("Failed to login.");
       }

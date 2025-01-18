@@ -113,8 +113,29 @@ const createAndInviteUser = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ["id", "username", "email", "isInvited"],
+      where: {
+        role: "user",
+      },
+    });
+    if (!users.length) {
+      return res.status(404).json({
+        message: "No User found.",
+      });
+    }
+    res.status(200).json({ message: "users fetch successfully", users });
+  } catch (error) {
+    console.error("Error getting all users:", error.message);
+    res.status(500).json({ message: "Server error." });
+  }
+};
+
 module.exports = {
   adminSignup,
   createAndInviteUser,
   signin,
+  getAllUsers,
 };
