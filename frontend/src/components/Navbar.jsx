@@ -22,10 +22,10 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/profile"
+              to="/create-user"
               className="inline-block w-full px-4 py-2  focus:border-blue-500 text-white"
             >
-              Profile
+              Create User
             </Link>
           </li>
           <li>
@@ -40,7 +40,7 @@ const Navbar = () => {
             <button
               onClick={() => {
                 localStorage.removeItem("token");
-                window.location.href = "/";
+                window.location.href = "/login";
               }}
               className="inline-block w-full px-4 py-2  focus:border-blue-500 text-white"
             >
