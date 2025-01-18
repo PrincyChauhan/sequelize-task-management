@@ -7,7 +7,7 @@ const adminSignup = async (req, res) => {
   const { username, email, password } = req.body;
   try {
     const existingAdmin = await User.findOne({
-      where: { role: "admin" },
+      where: { email },
     });
     if (existingAdmin) {
       return res.status(400).json({
