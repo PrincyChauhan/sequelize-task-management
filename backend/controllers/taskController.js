@@ -106,8 +106,36 @@ const getAllTasks = async (req, res) => {
     });
   }
 };
+
+const getTaskbyId = async (req, res) => {
+  const { taskId } = req.params;
+  try {
+    const task = await Task.findByPk(taskId, {
+      include: {
+        model: SubTask,
+        as: "subtasks",
+      },
+    });
+    if (!task) {
+      return res.status(404).json({
+        message: "Task not found.",
+      });
+    }
+    res.status(200).json({
+      message: "Task fetched successfully",
+      task,
+    });
+  } catch (error) {
+    console.error("Error getting task by id:", error);
+    res.status(500).json({
+      message: "Internal server error.",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   createTaskWithSubtasks,
   updateTaskWithSubtasks,
   getAllTasks,
+  getTaskbyId,
 };

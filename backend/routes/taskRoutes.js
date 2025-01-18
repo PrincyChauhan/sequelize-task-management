@@ -10,4 +10,5 @@ router.post(
   taskController.updateTaskWithSubtasks
 );
 router.get("/get-tasks", isAdmin, taskController.getAllTasks);
+router.get("/get-task/:taskId", isAdmin, taskController.getTaskbyId);
 module.exports = router;
