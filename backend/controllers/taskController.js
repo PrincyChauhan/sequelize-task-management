@@ -1,5 +1,4 @@
 const { Task, SubTask, User } = require("../models");
-const { Sequelize, where } = require("sequelize");
 
 const createTaskWithSubtasks = async (req, res) => {
   const { title, description, dueDate, assignedTo, subtasks } = req.body;
@@ -50,7 +49,9 @@ const updateTaskWithSubtasks = async (req, res) => {
   try {
     const task = await Task.findByPk(taskId);
     if (!task) {
-      return res.status(404).json({ message: "Task not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "Task not found." });
     }
     await task.update({
       title: title || task.title,
@@ -72,6 +73,7 @@ const updateTaskWithSubtasks = async (req, res) => {
 
     res.status(200).json({
       message: "Task updated successfully.",
+      success: true,
       task: updatedTask,
     });
   } catch (error) {
