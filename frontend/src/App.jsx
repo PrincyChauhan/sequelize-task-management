@@ -3,6 +3,7 @@ import Signup from "./pages/signup";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import CreateUser from "./pages/CreateUser";
+import CreateTask from "./pages/CreateTask";
 const App = () => {
   return (
     <Router>
@@ -11,6 +12,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create-user" element={<CreateUser />} />
+        <Route path="/create-task" element={<CreateTask />} />
       </Routes>
     </Router>
   );

@@ -30,10 +30,18 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/settings"
+              to="/create-task"
               className="inline-block w-full px-4 py-2 focus:border-blue-500 text-white"
             >
-              Settings
+              Create Task
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/tasks"
+              className="inline-block w-full px-4 py-2 focus:border-blue-500 text-white"
+            >
+              Tasks List
             </Link>
           </li>
           <li>
