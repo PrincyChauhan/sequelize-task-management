@@ -10,12 +10,11 @@ const db = {
   SubTask,
 };
 
-Task.associate({ SubTask });
-SubTask.associate({ Task });
+require("./association")(db);
 
 db.syncDatabase = async () => {
   try {
-    // await sequelize.sync({ alter: true });
+    // await sequelize.sync({ force: true });
     await sequelize.sync({});
     console.log("All tables synced successfully!");
   } catch (err) {

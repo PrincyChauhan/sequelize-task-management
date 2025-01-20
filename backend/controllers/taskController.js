@@ -1,4 +1,5 @@
-const { Task, SubTask } = require("../models");
+const { Task, SubTask, User } = require("../models");
+const { Sequelize } = require("sequelize");
 
 const createTaskWithSubtasks = async (req, res) => {
   const { title, description, dueDate, assignedTo, subtasks } = req.body;
@@ -84,16 +85,25 @@ const updateTaskWithSubtasks = async (req, res) => {
 const getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.findAll({
-      include: {
-        model: SubTask,
-        as: "subtasks",
-      },
+      include: [
+        {
+          model: SubTask,
+          as: "subtasks",
+        },
+        {
+          model: User,
+          as: "assignedToUser",
+          attributes: ["username", "email"],
+        },
+      ],
     });
+
     if (!tasks.length) {
       return res.status(404).json({
         message: "No tasks found.",
       });
     }
+
     res.status(200).json({
       message: "Tasks fetched successfully.",
       tasks,
@@ -147,6 +157,7 @@ const deleteTaskById = async (req, res) => {
     task.deletedAt = new Date();
     await task.save();
     return res.status(200).json({
+      success: true,
       message: "Task deleted successfully.",
       task,
     });

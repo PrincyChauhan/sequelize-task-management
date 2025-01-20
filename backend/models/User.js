@@ -1,6 +1,7 @@
-const { DataTypes } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 const commonFields = require("./commonFields");
+const Task = require("./Task");
 
 const User = sequelize.define(
   "User",
@@ -44,5 +45,4 @@ const User = sequelize.define(
     timestamps: true,
   }
 );
-
 module.exports = User;

@@ -48,11 +48,4 @@ const Task = sequelize.define(
   }
 );
 
-Task.associate = (models) => {
-  Task.hasMany(models.SubTask, {
-    foreignKey: "taskId",
-    as: "subtasks",
-  });
-};
-
 module.exports = Task;
