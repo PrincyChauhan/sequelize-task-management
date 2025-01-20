@@ -1,5 +1,5 @@
 const { Task, SubTask, User } = require("../models");
-const { Sequelize } = require("sequelize");
+const { Sequelize, where } = require("sequelize");
 
 const createTaskWithSubtasks = async (req, res) => {
   const { title, description, dueDate, assignedTo, subtasks } = req.body;
@@ -85,6 +85,9 @@ const updateTaskWithSubtasks = async (req, res) => {
 const getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.findAll({
+      where: {
+        isDeleted: false,
+      },
       include: [
         {
           model: SubTask,
@@ -169,10 +172,35 @@ const deleteTaskById = async (req, res) => {
     });
   }
 };
+
+const updateTaskStatus = async (req, res) => {
+  const { taskId, newStatus } = req.body;
+  try {
+    const task = await Task.findByPk(taskId);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found." });
+    }
+    task.status = newStatus;
+    await task.save();
+    res.status(200).json({
+      success: true,
+      message: "Task status updated successfully.",
+      task,
+    });
+  } catch (error) {
+    console.error("Error updating task status:", error);
+    res.status(500).json({
+      message: "Internal server error.",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createTaskWithSubtasks,
   updateTaskWithSubtasks,
   getAllTasks,
   getTaskbyId,
   deleteTaskById,
+  updateTaskStatus,
 };

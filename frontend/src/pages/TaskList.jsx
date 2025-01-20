@@ -83,6 +83,36 @@ const TaskListing = () => {
     setSearchQuery(e.target.value);
   };
 
+  const handleStatusChange = async (taskId, newStatus) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!taskId || !newStatus) {
+        toast.error("Invalid task or status.");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:3000/task/update-task-status",
+        { taskId, newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.data.success) {
+        toast.success("Task status updated successfully!");
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === taskId ? { ...task, status: newStatus } : task
+          )
+        );
+      } else {
+        toast.error("Failed to update task status.");
+      }
+    } catch (error) {
+      console.log(error.response?.data?.message || error.message);
+      toast.error("An error occurred while updating task status.");
+    }
+  };
+
   const sortedTasks = [...tasks].sort(
     (a, b) => new Date(a.dueDate) - new Date(b.dueDate)
   );
@@ -131,7 +161,7 @@ const TaskListing = () => {
                     task.title
                       .toLowerCase()
                       .includes(searchQuery.toLowerCase()) ||
-                    task.assignedTo?.username
+                    task.assignedToUser?.username
                       .toLowerCase()
                       .includes(searchQuery.toLowerCase())
                 )
@@ -151,7 +181,13 @@ const TaskListing = () => {
                       })}
                     </td>
                     <td className="px-4 py-2 border">
-                      <select value={task.status} className="border p-2">
+                      <select
+                        value={task.status}
+                        onChange={(e) =>
+                          handleStatusChange(task.id, e.target.value)
+                        }
+                        className="border p-2"
+                      >
                         <option value="pending">Pending</option>
                         <option value="in-progress">In Progress</option>
                         <option value="completed">Completed</option>
