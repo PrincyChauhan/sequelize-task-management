@@ -120,28 +120,71 @@ const getAllTasks = async (req, res) => {
   }
 };
 
+// const getTaskbyId = async (req, res) => {
+//   const { taskId } = req.params;
+//   try {
+//     const task = await Task.findByPk(taskId, {
+//       include: {
+//         model: SubTask,
+//         as: "subtasks",
+//       },
+//     });
+//     if (!task) {
+//       return res.status(404).json({
+//         message: "Task not found.",
+//         success: false,
+//       });
+//     }
+//     res.status(200).json({
+//       message: "Task fetched successfully",
+//       success: true,
+//       task,
+//     });
+//   } catch (error) {
+//     console.error("Error getting task by id:", error);
+//     res.status(500).json({
+//       message: "Internal server error.",
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// };
+
 const getTaskbyId = async (req, res) => {
   const { taskId } = req.params;
+
   try {
     const task = await Task.findByPk(taskId, {
-      include: {
-        model: SubTask,
-        as: "subtasks",
-      },
+      include: [
+        {
+          model: SubTask,
+          as: "subtasks", // Subtasks association
+        },
+        {
+          model: User, // Include the assigned user
+          as: "assignedToUser", // Ensure the alias matches your association
+          attributes: ["username", "email"], // Fetch only the needed fields
+        },
+      ],
     });
+
     if (!task) {
       return res.status(404).json({
         message: "Task not found.",
+        success: false,
       });
     }
-    res.status(200).json({
+
+    return res.status(200).json({
       message: "Task fetched successfully",
+      success: true,
       task,
     });
   } catch (error) {
     console.error("Error getting task by id:", error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Internal server error.",
+      success: false,
       error: error.message,
     });
   }
